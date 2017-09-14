@@ -11,6 +11,7 @@ var config = require('./config/config');
 
 var index = require('./routes/index');
 var users = require('./routes/users');
+var friends = require('./routes/friends');
 
 var app = express();
 
@@ -39,6 +40,7 @@ require('./config/passport')(passport);
 // Routes
 app.use('/', index);
 app.use('/users', users);
+app.use('/friends', friends);
 
 // catch 404 and forward to error handler
 app.use(function(req, res, next) {
