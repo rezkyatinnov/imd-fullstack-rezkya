@@ -20,6 +20,11 @@ var UserSchema = new Schema({
   }
 });
 
+UserSchema.path('email').validate(function (email) {
+   var emailRegex = /^([\w-\.]+@([\w-]+\.)+[\w-]{2,4})?$/;
+   return emailRegex.test(email); // Assuming email has a text attribute
+}, 'invalid email')
+
 // Hash the user's password before inserting a new user
 UserSchema.pre('save', function(next) {
   var user = this;
