@@ -16,6 +16,7 @@ var friends = require('./routes/friends');
 var app = express();
 
 // Connect to database
+mongoose.Promise = require('bluebird');
 mongoose.connect(config.database.local,{
   useMongoClient: true,
   /* other options */
