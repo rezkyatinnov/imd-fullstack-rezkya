@@ -6,6 +6,7 @@ var User = require('../models/user');
 var Friend = require('../models/friend');
 let config = require('../config/config');
 let resBuilder = require('../builders/response');
+let _ = require('underscore');
 
 function buildFailedSaveFriendResponse(err) {
     if (!err.message) {
@@ -16,16 +17,15 @@ function buildFailedSaveFriendResponse(err) {
 }
 
 function hasFriendConnection(userfrom, userto, isFriendCallback, unapprovedCallback, notAFriendCallback) {
-    let fromPromise = Friend.findOne({from: userfrom._id,to:userto._id}).exec();
-    fromPromise.then(function (friend) {
-        hasConnection(friend);
-    }, function (err) {
-        let toPromise = Friend.findOne({from: userto._id,to:userfrom._id}).exec();
-        toPromise.then(function (friend) {
+    let query = Friend.findOne().where('users').in([userfrom._id, userto._id]).exec();
+    query.then(function (friend) {
+        if(friend){
             hasConnection(friend);
-        }, function (err) {
+        }else{
             notAFriendCallback();
-        });
+        }
+    }, function (err) {
+        notAFriendCallback();
     });
 
     function hasConnection(friend) {
@@ -60,8 +60,7 @@ router.post('/add', function (req, res) {
                             },
                             function () {
                                 let newFriend = new Friend({
-                                    from: userFrom._id,
-                                    to: userTo._id,
+                                    users: [userFrom._id,userTo._id],
                                     approved: true
                                 });
                                 let promise = newFriend.save();
@@ -90,6 +89,39 @@ router.post('/add', function (req, res) {
         resBuilder.buildBasic(res, false, 'can\'t do friend request with yourself')
     } else {
         resBuilder.buildBasic(res, false, 'unknown error')
+    }
+});
+
+
+// Register new friend
+router.post('/list', function (req, res) {
+    if (req.body.email) {
+        let userQuery = User.findOne({email: req.body.email}).exec();
+        userQuery.then(function (user) {
+            if(user){
+                let friendQuery = Friend.find().select('users -_id')
+                    .where('users').in([user._id]).exec();
+                friendQuery.then(function (friendlist) {
+                    if(friendlist){
+                        var friends = [];
+                        _.each(friendlist, function(friend) {
+                            if(friend.users[0].toUpperCase()==user._id.toString().toUpperCase()){
+                                friends=_.union(friends,friend.users[1]);
+                            }else{
+                                friends=_.union(friends,friend.users[0]);
+                            }
+                        })
+                        resBuilder.friendList(res,true,"retrieving user's friend success",friends);
+                    }else{
+                        resBuilder.buildBasic(res, false, 'user has no friend');
+                    }
+                });
+            }else{
+                resBuilder.buildBasic(res, false, 'no user with email: '.concat(req.body.email));
+            }
+        });
+    } else {
+        resBuilder.buildBasic(res, false, 'missing "email" field');
     }
 });
 

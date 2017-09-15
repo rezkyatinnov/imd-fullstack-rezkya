@@ -3,8 +3,8 @@ let Schema = mongoose.Schema;
 
 // Schema defines how the user data will be stored in MongoDB
 var FriendSchema = new Schema({
-    from: { type: Schema.Types.ObjectId, ref: 'User' },
-    to: { type: Schema.Types.ObjectId, ref: 'User' },
+    // users is array with size 2
+    users:[{ "type": Schema.Types.ObjectId, ref: "User" }],
     approved: {
         type: Boolean,
         required: true,
