@@ -31,7 +31,7 @@ module.exports = {
                 async.parallel(
                     blockFunc,
                     function (err,results) {
-                        callback([results]);
+                        callback(results);
                     }
                 )
             }else{

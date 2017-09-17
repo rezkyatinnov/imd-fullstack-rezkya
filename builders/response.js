@@ -28,5 +28,13 @@ module.exports = {
             blocked:blocked,
             count:blocked.length
         });
+    },
+    postUpdate : function (res, success, message,recipients) {
+        return res.json({
+            success: success,
+            message: message,
+            recipients:recipients,
+            count:recipients.length
+        });
     }
 }
