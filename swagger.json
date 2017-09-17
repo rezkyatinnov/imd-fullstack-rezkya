@@ -1,0 +1,950 @@
+{
+  "swagger": "2.0",
+  "info": {
+    "version": "1.0",
+    "title": "imdfullstackexpress",
+    "description": "this is a test for IMD as Fullstack Developer",
+    "license": {
+      "name": "MIT",
+      "url": "http://github.com/gruntjs/grunt/blob/master/LICENSE-MIT"
+    }
+  },
+  "host": "localhost:3000",
+  "basePath": "/",
+  "securityDefinitions": {
+    "auth": {
+      "type": "oauth2",
+      "flow": "implicit",
+      "authorizationUrl": "http://localhost:3000",
+      "scopes": {}
+    }
+  },
+  "schemes": [
+    "http"
+  ],
+  "consumes": [
+    "application/json"
+  ],
+  "produces": [
+    "application/json"
+  ],
+  "paths": {
+    "/users/register": {
+      "post": {
+        "description": "register new user",
+        "summary": "/users/register",
+        "tags": [
+          "user"
+        ],
+        "operationId": "/users/register",
+        "produces": [
+          "application/json"
+        ],
+        "parameters": [
+          {
+            "name": "Body",
+            "in": "body",
+            "required": true,
+            "description": "",
+            "schema": {
+              "$ref": "#/definitions/~1users~1registerrequest"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "{success:[[true/false]]}"
+          }
+        },
+        "security": [],
+        "x-unitTests": [
+          {
+            "request": {
+              "method": "POST",
+              "uri": "/users/register",
+              "headers": {
+                "Content-Type": "application/json"
+              },
+              "body": "{\n\t\"name\":\"User 5\",\n    \"email\": \"user5@example.com\",\n    \"password\": \"password123\"\n}"
+            },
+            "expectedResponse": {
+              "x-allowExtraHeaders": true,
+              "x-bodyMatchMode": "NONE",
+              "x-arrayOrderedMatching": false,
+              "x-arrayCheckCount": false,
+              "x-matchResponseSchema": true,
+              "headers": {}
+            },
+            "x-testShouldPass": true,
+            "x-testEnabled": true,
+            "x-testName": "/users/register",
+            "x-testDescription": "TODO: Add Description"
+          }
+        ],
+        "x-operation-settings": {
+          "CollectParameters": false,
+          "AllowDynamicQueryParameters": false,
+          "AllowDynamicFormParameters": false,
+          "IsMultiContentStreaming": false
+        }
+      }
+    },
+    "/users/auth": {
+      "post": {
+        "description": "authenticate user with email and password",
+        "summary": "/users/auth",
+        "tags": [
+          "user"
+        ],
+        "operationId": "/users/auth",
+        "produces": [
+          "application/json"
+        ],
+        "parameters": [
+          {
+            "name": "Body",
+            "in": "body",
+            "required": true,
+            "description": "",
+            "schema": {
+              "$ref": "#/definitions/~1users~1authrequest"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": ""
+          }
+        },
+        "security": [],
+        "x-unitTests": [
+          {
+            "request": {
+              "method": "POST",
+              "uri": "/users/auth",
+              "headers": {
+                "Content-Type": "application/json"
+              },
+              "body": "{\n    \"email\": \"user1@example.com\",\n    \"password\": \"password123\"\n}"
+            },
+            "expectedResponse": {
+              "x-allowExtraHeaders": true,
+              "x-bodyMatchMode": "NONE",
+              "x-arrayOrderedMatching": false,
+              "x-arrayCheckCount": false,
+              "x-matchResponseSchema": true,
+              "headers": {}
+            },
+            "x-testShouldPass": true,
+            "x-testEnabled": true,
+            "x-testName": "/users/auth",
+            "x-testDescription": "TODO: Add Description"
+          }
+        ],
+        "x-operation-settings": {
+          "CollectParameters": false,
+          "AllowDynamicQueryParameters": false,
+          "AllowDynamicFormParameters": false,
+          "IsMultiContentStreaming": false
+        }
+      }
+    },
+    "/users/dashboard": {
+      "get": {
+        "description": "example endpoint which need token",
+        "summary": "/users/dashboard",
+        "tags": [
+          "user"
+        ],
+        "operationId": "/users/dashboard",
+        "produces": [
+          "application/json"
+        ],
+        "parameters": [
+          {
+            "name": "Authorization",
+            "in": "header",
+            "required": true,
+            "type": "string",
+            "description": ""
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": ""
+          }
+        },
+        "security": [
+          {
+            "auth": []
+          }
+        ],
+        "x-unitTests": [
+          {
+            "request": {
+              "method": "GET",
+              "uri": "/users/dashboard",
+              "headers": {
+                "Authorization": "Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyIkX18iOnsic3RyaWN0TW9kZSI6dHJ1ZSwic2VsZWN0ZWQiOnt9LCJnZXR0ZXJzIjp7fSwiX2lkIjoiNTliYWQ3ODU4NTY5MmU0Nzg4ZTczMmM5Iiwid2FzUG9wdWxhdGVkIjpmYWxzZSwiYWN0aXZlUGF0aHMiOnsicGF0aHMiOnsicGFzc3dvcmQiOiJpbml0IiwiZW1haWwiOiJpbml0IiwibmFtZSI6ImluaXQiLCJfX3YiOiJpbml0IiwiX2lkIjoiaW5pdCJ9LCJzdGF0ZXMiOnsiaWdub3JlIjp7fSwiZGVmYXVsdCI6e30sImluaXQiOnsiX192Ijp0cnVlLCJwYXNzd29yZCI6dHJ1ZSwiZW1haWwiOnRydWUsIm5hbWUiOnRydWUsIl9pZCI6dHJ1ZX0sIm1vZGlmeSI6e30sInJlcXVpcmUiOnt9fSwic3RhdGVOYW1lcyI6WyJyZXF1aXJlIiwibW9kaWZ5IiwiaW5pdCIsImRlZmF1bHQiLCJpZ25vcmUiXX0sInBhdGhzVG9TY29wZXMiOnt9LCJlbWl0dGVyIjp7ImRvbWFpbiI6bnVsbCwiX2V2ZW50cyI6e30sIl9ldmVudHNDb3VudCI6MCwiX21heExpc3RlbmVycyI6MH19LCJpc05ldyI6ZmFsc2UsIl9kb2MiOnsiX192IjowLCJwYXNzd29yZCI6IiQyYSQxMCRaSVZwbkFVS1l3Z3pxOU12cHlQUE11dC5yczBwV0hxVVd6RmJ3NmtOaW9raVc1bnZYTURtdSIsImVtYWlsIjoidXNlcjFAZXhhbXBsZS5jb20iLCJuYW1lIjoiVXNlciAxIiwiX2lkIjoiNTliYWQ3ODU4NTY5MmU0Nzg4ZTczMmM5In0sIiRpbml0Ijp0cnVlLCJpYXQiOjE1MDU0MjIwNTUsImV4cCI6MTUwNTU5NDg1NX0.J0NeVUYQDYAiupgtirqgUfxt5YbTbig65T02czC32S8"
+              }
+            },
+            "expectedResponse": {
+              "x-allowExtraHeaders": true,
+              "x-bodyMatchMode": "NONE",
+              "x-arrayOrderedMatching": false,
+              "x-arrayCheckCount": false,
+              "x-matchResponseSchema": true,
+              "headers": {}
+            },
+            "x-testShouldPass": true,
+            "x-testEnabled": true,
+            "x-testName": "/users/dashboard",
+            "x-testDescription": "TODO: Add Description"
+          }
+        ],
+        "x-operation-settings": {
+          "CollectParameters": false,
+          "AllowDynamicQueryParameters": false,
+          "AllowDynamicFormParameters": false,
+          "IsMultiContentStreaming": false
+        }
+      }
+    },
+    "/users/": {
+      "get": {
+        "description": "list all user available",
+        "summary": "/users/",
+        "tags": [
+          "user"
+        ],
+        "operationId": "/users/",
+        "produces": [
+          "application/json"
+        ],
+        "parameters": [],
+        "responses": {
+          "200": {
+            "description": ""
+          }
+        },
+        "security": [],
+        "x-unitTests": [
+          {
+            "request": {
+              "method": "GET",
+              "uri": "/users/"
+            },
+            "expectedResponse": {
+              "x-allowExtraHeaders": true,
+              "x-bodyMatchMode": "NONE",
+              "x-arrayOrderedMatching": false,
+              "x-arrayCheckCount": false,
+              "x-matchResponseSchema": true,
+              "headers": {}
+            },
+            "x-testShouldPass": true,
+            "x-testEnabled": true,
+            "x-testName": "/users/",
+            "x-testDescription": "TODO: Add Description"
+          }
+        ],
+        "x-operation-settings": {
+          "CollectParameters": false,
+          "AllowDynamicQueryParameters": false,
+          "AllowDynamicFormParameters": false,
+          "IsMultiContentStreaming": false
+        }
+      }
+    },
+    "/friends/add": {
+      "post": {
+        "description": "connect 2 users as friend",
+        "summary": "/friends/add",
+        "tags": [
+          "friend"
+        ],
+        "operationId": "/friends/add",
+        "produces": [
+          "application/json"
+        ],
+        "parameters": [
+          {
+            "name": "Body",
+            "in": "body",
+            "required": true,
+            "description": "",
+            "schema": {
+              "$ref": "#/definitions/~1friends~1addrequest"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": ""
+          }
+        },
+        "security": [],
+        "x-unitTests": [
+          {
+            "request": {
+              "method": "POST",
+              "uri": "/friends/add",
+              "headers": {
+                "Content-Type": "application/json"
+              },
+              "body": "{\"friends\":[\"user3@example.com\",\"user2@example.com\"]}"
+            },
+            "expectedResponse": {
+              "x-allowExtraHeaders": true,
+              "x-bodyMatchMode": "NONE",
+              "x-arrayOrderedMatching": false,
+              "x-arrayCheckCount": false,
+              "x-matchResponseSchema": true,
+              "headers": {}
+            },
+            "x-testShouldPass": true,
+            "x-testEnabled": true,
+            "x-testName": "/friends/add",
+            "x-testDescription": "TODO: Add Description"
+          }
+        ],
+        "x-operation-settings": {
+          "CollectParameters": false,
+          "AllowDynamicQueryParameters": false,
+          "AllowDynamicFormParameters": false,
+          "IsMultiContentStreaming": false
+        }
+      }
+    },
+    "/friends/list": {
+      "post": {
+        "description": "list all friend by given email",
+        "summary": "/friends/list",
+        "tags": [
+          "friend"
+        ],
+        "operationId": "/friends/list",
+        "produces": [
+          "application/json"
+        ],
+        "parameters": [
+          {
+            "name": "Body",
+            "in": "body",
+            "required": true,
+            "description": "",
+            "schema": {
+              "$ref": "#/definitions/~1friends~1listrequest"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": ""
+          }
+        },
+        "security": [],
+        "x-unitTests": [
+          {
+            "request": {
+              "method": "POST",
+              "uri": "/friends/list",
+              "headers": {
+                "Content-Type": "application/json"
+              },
+              "body": "{\n\t\"email\":\"user2@example.com\"\n}"
+            },
+            "expectedResponse": {
+              "x-allowExtraHeaders": true,
+              "x-bodyMatchMode": "NONE",
+              "x-arrayOrderedMatching": false,
+              "x-arrayCheckCount": false,
+              "x-matchResponseSchema": true,
+              "headers": {}
+            },
+            "x-testShouldPass": true,
+            "x-testEnabled": true,
+            "x-testName": "/friends/list",
+            "x-testDescription": "TODO: Add Description"
+          }
+        ],
+        "x-operation-settings": {
+          "CollectParameters": false,
+          "AllowDynamicQueryParameters": false,
+          "AllowDynamicFormParameters": false,
+          "IsMultiContentStreaming": false
+        }
+      }
+    },
+    "/friends/mutual": {
+      "post": {
+        "description": "list mutual friend by given emails",
+        "summary": "/friends/mutual",
+        "tags": [
+          "friend"
+        ],
+        "operationId": "/friends/mutual",
+        "produces": [
+          "application/json"
+        ],
+        "parameters": [
+          {
+            "name": "Body",
+            "in": "body",
+            "required": true,
+            "description": "",
+            "schema": {
+              "$ref": "#/definitions/~1friends~1mutualrequest"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": ""
+          }
+        },
+        "security": [],
+        "x-unitTests": [
+          {
+            "request": {
+              "method": "POST",
+              "uri": "/friends/mutual",
+              "headers": {
+                "Content-Type": "application/json"
+              },
+              "body": "{\"friends\":[\"user1@example.com\",\"user3@example.com\"]}"
+            },
+            "expectedResponse": {
+              "x-allowExtraHeaders": true,
+              "x-bodyMatchMode": "NONE",
+              "x-arrayOrderedMatching": false,
+              "x-arrayCheckCount": false,
+              "x-matchResponseSchema": true,
+              "headers": {}
+            },
+            "x-testShouldPass": true,
+            "x-testEnabled": true,
+            "x-testName": "/friends/mutual",
+            "x-testDescription": "TODO: Add Description"
+          }
+        ],
+        "x-operation-settings": {
+          "CollectParameters": false,
+          "AllowDynamicQueryParameters": false,
+          "AllowDynamicFormParameters": false,
+          "IsMultiContentStreaming": false
+        }
+      }
+    },
+    "/follows/add": {
+      "post": {
+        "description": "add new following user",
+        "summary": "/follows/add",
+        "tags": [
+          "follow"
+        ],
+        "operationId": "/follows/add",
+        "produces": [
+          "application/json"
+        ],
+        "parameters": [
+          {
+            "name": "Body",
+            "in": "body",
+            "required": true,
+            "description": "",
+            "schema": {
+              "$ref": "#/definitions/~1follows~1addrequest"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": ""
+          }
+        },
+        "security": [],
+        "x-unitTests": [
+          {
+            "request": {
+              "method": "POST",
+              "uri": "/follows/add",
+              "headers": {
+                "Content-Type": "application/json"
+              },
+              "body": "{\n\t\"requestor\":\"user3@example.com\",\n\t\"target\":\"user1@example.com\"\n}"
+            },
+            "expectedResponse": {
+              "x-allowExtraHeaders": true,
+              "x-bodyMatchMode": "NONE",
+              "x-arrayOrderedMatching": false,
+              "x-arrayCheckCount": false,
+              "x-matchResponseSchema": true,
+              "headers": {}
+            },
+            "x-testShouldPass": true,
+            "x-testEnabled": true,
+            "x-testName": "/follows/add",
+            "x-testDescription": "TODO: Add Description"
+          }
+        ],
+        "x-operation-settings": {
+          "CollectParameters": false,
+          "AllowDynamicQueryParameters": false,
+          "AllowDynamicFormParameters": false,
+          "IsMultiContentStreaming": false
+        }
+      }
+    },
+    "/follows/list": {
+      "post": {
+        "description": "list all follower of a user",
+        "summary": "/follows/list",
+        "tags": [
+          "follow"
+        ],
+        "operationId": "/follows/list",
+        "produces": [
+          "application/json"
+        ],
+        "parameters": [
+          {
+            "name": "Body",
+            "in": "body",
+            "required": true,
+            "description": "",
+            "schema": {
+              "$ref": "#/definitions/~1follows~1listrequest"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": ""
+          }
+        },
+        "security": [],
+        "x-unitTests": [
+          {
+            "request": {
+              "method": "POST",
+              "uri": "/follows/list",
+              "headers": {
+                "Content-Type": "application/json"
+              },
+              "body": "{\n\t\"email\":\"user1@example.com\"\n}"
+            },
+            "expectedResponse": {
+              "x-allowExtraHeaders": true,
+              "x-bodyMatchMode": "NONE",
+              "x-arrayOrderedMatching": false,
+              "x-arrayCheckCount": false,
+              "x-matchResponseSchema": true,
+              "headers": {}
+            },
+            "x-testShouldPass": true,
+            "x-testEnabled": true,
+            "x-testName": "/follows/list",
+            "x-testDescription": "TODO: Add Description"
+          }
+        ],
+        "x-operation-settings": {
+          "CollectParameters": false,
+          "AllowDynamicQueryParameters": false,
+          "AllowDynamicFormParameters": false,
+          "IsMultiContentStreaming": false
+        }
+      }
+    },
+    "/blocks/add": {
+      "post": {
+        "description": "add new blocked user",
+        "summary": "/blocks/add",
+        "tags": [
+          "block"
+        ],
+        "operationId": "/blocks/add",
+        "produces": [
+          "application/json"
+        ],
+        "parameters": [
+          {
+            "name": "Body",
+            "in": "body",
+            "required": true,
+            "description": "",
+            "schema": {
+              "$ref": "#/definitions/~1blocks~1addrequest"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": ""
+          }
+        },
+        "security": [],
+        "x-unitTests": [
+          {
+            "request": {
+              "method": "POST",
+              "uri": "/blocks/add",
+              "headers": {
+                "Content-Type": "application/json"
+              },
+              "body": "{\n\t\"requestor\":\"user3@example.com\",\n\t\"target\":\"user1@example.com\"\n}"
+            },
+            "expectedResponse": {
+              "x-allowExtraHeaders": true,
+              "x-bodyMatchMode": "NONE",
+              "x-arrayOrderedMatching": false,
+              "x-arrayCheckCount": false,
+              "x-matchResponseSchema": true,
+              "headers": {}
+            },
+            "x-testShouldPass": true,
+            "x-testEnabled": true,
+            "x-testName": "/blocks/add",
+            "x-testDescription": "TODO: Add Description"
+          }
+        ],
+        "x-operation-settings": {
+          "CollectParameters": false,
+          "AllowDynamicQueryParameters": false,
+          "AllowDynamicFormParameters": false,
+          "IsMultiContentStreaming": false
+        }
+      }
+    },
+    "/blocks/list": {
+      "post": {
+        "description": "list all blocked users",
+        "summary": "/blocks/list",
+        "tags": [
+          "block"
+        ],
+        "operationId": "/blocks/list",
+        "produces": [
+          "application/json"
+        ],
+        "parameters": [
+          {
+            "name": "Body",
+            "in": "body",
+            "required": true,
+            "description": "",
+            "schema": {
+              "$ref": "#/definitions/~1blocks~1listrequest"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": ""
+          }
+        },
+        "security": [],
+        "x-unitTests": [
+          {
+            "request": {
+              "method": "POST",
+              "uri": "/blocks/list",
+              "headers": {
+                "Content-Type": "application/json"
+              },
+              "body": "{\n\t\"email\":\"user1@example.com\"\n}"
+            },
+            "expectedResponse": {
+              "x-allowExtraHeaders": true,
+              "x-bodyMatchMode": "NONE",
+              "x-arrayOrderedMatching": false,
+              "x-arrayCheckCount": false,
+              "x-matchResponseSchema": true,
+              "headers": {}
+            },
+            "x-testShouldPass": true,
+            "x-testEnabled": true,
+            "x-testName": "/blocks/list",
+            "x-testDescription": "TODO: Add Description"
+          }
+        ],
+        "x-operation-settings": {
+          "CollectParameters": false,
+          "AllowDynamicQueryParameters": false,
+          "AllowDynamicFormParameters": false,
+          "IsMultiContentStreaming": false
+        }
+      }
+    },
+    "/posts/new": {
+      "post": {
+        "description": "post new update to recipients",
+        "summary": "/posts/new",
+        "tags": [
+          "post"
+        ],
+        "operationId": "/posts/new",
+        "produces": [
+          "application/json"
+        ],
+        "parameters": [
+          {
+            "name": "Body",
+            "in": "body",
+            "required": true,
+            "description": "",
+            "schema": {
+              "$ref": "#/definitions/~1posts~1newrequest"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": ""
+          }
+        },
+        "security": [],
+        "x-unitTests": [
+          {
+            "request": {
+              "method": "POST",
+              "uri": "/posts/new",
+              "headers": {
+                "Content-Type": "application/json"
+              },
+              "body": "{\n\t\"sender\":\"user2@example.com\",\n\t\"text\":\"update status dulu ah\"\n}"
+            },
+            "expectedResponse": {
+              "x-allowExtraHeaders": true,
+              "x-bodyMatchMode": "NONE",
+              "x-arrayOrderedMatching": false,
+              "x-arrayCheckCount": false,
+              "x-matchResponseSchema": true,
+              "headers": {}
+            },
+            "x-testShouldPass": true,
+            "x-testEnabled": true,
+            "x-testName": "/posts/new",
+            "x-testDescription": "TODO: Add Description"
+          }
+        ],
+        "x-operation-settings": {
+          "CollectParameters": false,
+          "AllowDynamicQueryParameters": false,
+          "AllowDynamicFormParameters": false,
+          "IsMultiContentStreaming": false
+        }
+      }
+    }
+  },
+  "definitions": {
+    "/users/registerrequest": {
+      "title": "/users/registerRequest",
+      "example": {
+        "name": "User 5",
+        "email": "user5@example.com",
+        "password": "password123"
+      },
+      "type": "object",
+      "properties": {
+        "name": {
+          "description": "",
+          "type": "string"
+        },
+        "email": {
+          "description": "",
+          "type": "string"
+        },
+        "password": {
+          "description": "",
+          "type": "string"
+        }
+      },
+      "required": [
+        "name",
+        "email",
+        "password"
+      ]
+    },
+    "/users/authrequest": {
+      "title": "/users/authRequest",
+      "example": {
+        "email": "user1@example.com",
+        "password": "password123"
+      },
+      "type": "object",
+      "properties": {
+        "email": {
+          "description": "",
+          "type": "string"
+        },
+        "password": {
+          "description": "",
+          "type": "string"
+        }
+      },
+      "required": [
+        "email",
+        "password"
+      ]
+    },
+    "/friends/addrequest": {
+      "title": "/friends/addRequest",
+      "example": {
+        "friends": [
+          "user3@example.com",
+          "user2@example.com"
+        ]
+      },
+      "type": "object",
+      "properties": {
+        "friends": {
+          "description": "",
+          "type": "array",
+          "items": {
+            "type": "string"
+          }
+        }
+      },
+      "required": [
+        "friends"
+      ]
+    },
+    "/friends/listrequest": {
+      "title": "/friends/listRequest",
+      "example": {
+        "email": "user2@example.com"
+      },
+      "type": "object",
+      "properties": {
+        "email": {
+          "description": "",
+          "type": "string"
+        }
+      },
+      "required": [
+        "email"
+      ]
+    },
+    "/friends/mutualrequest": {
+      "title": "/friends/mutualRequest",
+      "example": {
+        "friends": [
+          "user1@example.com",
+          "user3@example.com"
+        ]
+      },
+      "type": "object",
+      "properties": {
+        "friends": {
+          "description": "",
+          "type": "array",
+          "items": {
+            "type": "string"
+          }
+        }
+      },
+      "required": [
+        "friends"
+      ]
+    },
+    "/follows/addrequest": {
+      "title": "/follows/addRequest",
+      "example": {
+        "requestor": "user3@example.com",
+        "target": "user1@example.com"
+      },
+      "type": "object",
+      "properties": {
+        "requestor": {
+          "description": "",
+          "type": "string"
+        },
+        "target": {
+          "description": "",
+          "type": "string"
+        }
+      },
+      "required": [
+        "requestor",
+        "target"
+      ]
+    },
+    "/follows/listrequest": {
+      "title": "/follows/listRequest",
+      "example": {
+        "email": "user1@example.com"
+      },
+      "type": "object",
+      "properties": {
+        "email": {
+          "description": "",
+          "type": "string"
+        }
+      },
+      "required": [
+        "email"
+      ]
+    },
+    "/blocks/addrequest": {
+      "title": "/blocks/addRequest",
+      "example": {
+        "requestor": "user3@example.com",
+        "target": "user1@example.com"
+      },
+      "type": "object",
+      "properties": {
+        "requestor": {
+          "description": "",
+          "type": "string"
+        },
+        "target": {
+          "description": "",
+          "type": "string"
+        }
+      },
+      "required": [
+        "requestor",
+        "target"
+      ]
+    },
+    "/blocks/listrequest": {
+      "title": "/blocks/listRequest",
+      "example": {
+        "email": "user1@example.com"
+      },
+      "type": "object",
+      "properties": {
+        "email": {
+          "description": "",
+          "type": "string"
+        }
+      },
+      "required": [
+        "email"
+      ]
+    },
+    "/posts/newrequest": {
+      "title": "/posts/newRequest",
+      "example": {
+        "sender": "user2@example.com",
+        "text": "update status dulu ah"
+      },
+      "type": "object",
+      "properties": {
+        "sender": {
+          "description": "",
+          "type": "string"
+        },
+        "text": {
+          "description": "",
+          "type": "string"
+        }
+      },
+      "required": [
+        "sender",
+        "text"
+      ]
+    }
+  }
+}
