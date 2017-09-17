@@ -20,5 +20,13 @@ module.exports = {
             follower:follower,
             count:follower.length
         });
+    },
+    blockList : function (res, success, message,blocked) {
+        return res.json({
+            success: success,
+            message: message,
+            blocked:blocked,
+            count:blocked.length
+        });
     }
 }

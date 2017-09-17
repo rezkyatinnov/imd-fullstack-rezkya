@@ -4,6 +4,7 @@ let passport = require('passport');
 let jwt = require('jsonwebtoken');
 var User = require('../models/user');
 var Block = require('../models/block');
+var BlockHelper = require('../helpers/block-helper');
 let config = require('../config/config');
 let resBuilder = require('../builders/response');
 let _ = require('underscore');
@@ -80,6 +81,28 @@ router.post('/add', function (req, res) {
         resBuilder.buildBasic(res, false, 'can\'t block yourself')
     } else {
         resBuilder.buildBasic(res, false, 'unknown error')
+    }
+});
+
+// retrieve blocked list
+router.post('/list', function (req, res) {
+    if (req.body.email) {
+        let userQuery = User.findOne({email: req.body.email}).exec();
+        userQuery.then(function (user) {
+            if(user){
+                BlockHelper.blockedList(user._id,function(results){
+                    if(results.length>0){
+                        resBuilder.blockList(res,true,"retrieving user's blocked list success",results);
+                    }else{
+                        resBuilder.buildBasic(res, false, 'user has no blocked follower/friend');
+                    }
+                });
+            }else{
+                resBuilder.buildBasic(res, false, 'no user with email: '.concat(req.body.email));
+            }
+        });
+    } else {
+        resBuilder.buildBasic(res, false, 'missing "email" field');
     }
 });
 
