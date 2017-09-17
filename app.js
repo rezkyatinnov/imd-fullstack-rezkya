@@ -11,10 +11,12 @@ var config = require('./config/config');
 
 var index = require('./routes/index');
 var users = require('./routes/users');
+var friends = require('./routes/friends');
 
 var app = express();
 
 // Connect to database
+mongoose.Promise = require('bluebird');
 mongoose.connect(config.database.local,{
   useMongoClient: true,
   /* other options */
@@ -28,7 +30,7 @@ app.set('view engine', 'pug');
 //app.use(favicon(path.join(__dirname, 'public', 'favicon.ico')));
 app.use(logger('dev'));
 app.use(bodyParser.json());
-app.use(bodyParser.urlencoded({ extended: false }));
+app.use(bodyParser.urlencoded({ extended: true }));
 app.use(cookieParser());
 app.use(express.static(path.join(__dirname, 'public')));
 
@@ -39,6 +41,7 @@ require('./config/passport')(passport);
 // Routes
 app.use('/', index);
 app.use('/users', users);
+app.use('/friends', friends);
 
 // catch 404 and forward to error handler
 app.use(function(req, res, next) {
