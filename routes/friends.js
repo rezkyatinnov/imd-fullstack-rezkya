@@ -7,6 +7,7 @@ var Friend = require('../models/friend');
 let config = require('../config/config');
 let resBuilder = require('../builders/response');
 let _ = require('underscore');
+let async = require('async');
 
 function buildFailedSaveFriendResponse(err) {
     if (!err.message) {
@@ -17,7 +18,8 @@ function buildFailedSaveFriendResponse(err) {
 }
 
 function hasFriendConnection(userfrom, userto, isFriendCallback, unapprovedCallback, notAFriendCallback) {
-    let query = Friend.findOne().where('users').in([userfrom._id, userto._id]).exec();
+    let query = Friend.findOne()
+        .or([{ users: [userfrom._id, userto._id] }, { users: [userto._id, userfrom._id] }]).exec();
     query.then(function (friend) {
         if(friend){
             hasConnection(friend);
@@ -99,19 +101,35 @@ router.post('/list', function (req, res) {
         let userQuery = User.findOne({email: req.body.email}).exec();
         userQuery.then(function (user) {
             if(user){
-                let friendQuery = Friend.find().select('users -_id')
+                let friendQuery = Friend.find().select('users')
                     .where('users').in([user._id]).exec();
                 friendQuery.then(function (friendlist) {
                     if(friendlist){
-                        var friends = [];
+                        var friendFunc = [];
                         _.each(friendlist, function(friend) {
-                            if(friend.users[0].toUpperCase()==user._id.toString().toUpperCase()){
-                                friends=_.union(friends,friend.users[1]);
+                            let friendid;
+                            if(friend.users[0].toString().toUpperCase()==user._id.toString().toUpperCase()){
+                                friendid = friend.users[1];
                             }else{
-                                friends=_.union(friends,friend.users[0]);
+                                friendid = friend.users[0];
                             }
-                        })
-                        resBuilder.friendList(res,true,"retrieving user's friend success",friends);
+                            friendFunc.push(function (callback) {
+                                let userQuery = User.findOne({_id:friendid}).select('email').exec();
+                                userQuery.then(function (user) {
+                                    if(user){
+                                        callback(null,user.email);
+                                    }else{
+                                        callback(null,null);
+                                    }
+                                })
+                            });
+                        });
+                        async.parallel(
+                            friendFunc,
+                            function (err,results) {
+                                resBuilder.friendList(res,true,"retrieving user's friend success",results);
+                            }
+                        )
                     }else{
                         resBuilder.buildBasic(res, false, 'user has no friend');
                     }
