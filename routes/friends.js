@@ -173,10 +173,6 @@ router.post('/mutual', function (req, res) {
                                     }
                                 });
                                 var mutualfriends = _.intersection(friend1,friend2);
-                                console.log(friend1);
-                                console.log(friend2);
-                                console.log(mutualfriends);
-                                console.log(friendlist);
                                 _.each(mutualfriends,function (friend) {
                                     friendFunc.push(function (callback) {
                                         let userQuery = User.findOne({_id:friend}).select('email').exec();
