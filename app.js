@@ -6,6 +6,8 @@ var cookieParser = require('cookie-parser');
 var bodyParser = require('body-parser');
 var mongoose = require('mongoose');
 var passport = require('passport');
+const swaggerUi = require('swagger-ui-express');
+const swaggerDocument = require('./swagger.json');
 
 var config = require('./config/config');
 
@@ -48,6 +50,10 @@ app.use('/friends', friends);
 app.use('/follows', follows);
 app.use('/blocks', blocks);
 app.use('/posts', posts);
+
+// swagger doc
+var showExplorer = true;
+app.use('/api-docs', swaggerUi.serve, swaggerUi.setup(swaggerDocument, showExplorer));
 
 // catch 404 and forward to error handler
 app.use(function(req, res, next) {
