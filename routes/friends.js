@@ -4,6 +4,7 @@ let passport = require('passport');
 let jwt = require('jsonwebtoken');
 var User = require('../models/user');
 var Friend = require('../models/friend');
+var FriendHelper = require('../helpers/friend-helper');
 let config = require('../config/config');
 let resBuilder = require('../builders/response');
 let _ = require('underscore');
@@ -101,35 +102,9 @@ router.post('/list', function (req, res) {
         let userQuery = User.findOne({email: req.body.email}).exec();
         userQuery.then(function (user) {
             if(user){
-                let friendQuery = Friend.find().select('users')
-                    .where('users').in([user._id]).exec();
-                friendQuery.then(function (friendlist) {
-                    if(friendlist){
-                        var friendFunc = [];
-                        _.each(friendlist, function(friend) {
-                            let friendid;
-                            if(friend.users[0].toString().toUpperCase()==user._id.toString().toUpperCase()){
-                                friendid = friend.users[1];
-                            }else{
-                                friendid = friend.users[0];
-                            }
-                            friendFunc.push(function (callback) {
-                                let userQuery = User.findOne({_id:friendid}).select('email').exec();
-                                userQuery.then(function (user) {
-                                    if(user){
-                                        callback(null,user.email);
-                                    }else{
-                                        callback(null,null);
-                                    }
-                                })
-                            });
-                        });
-                        async.parallel(
-                            friendFunc,
-                            function (err,results) {
-                                resBuilder.friendList(res,true,"retrieving user's friend success",results);
-                            }
-                        )
+                FriendHelper.friendList(user._id,function(results){
+                    if(results.length>0){
+                        resBuilder.friendList(res,true,"retrieving user's friend success",results);
                     }else{
                         resBuilder.buildBasic(res, false, 'user has no friend');
                     }
