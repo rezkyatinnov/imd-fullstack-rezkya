@@ -6,7 +6,7 @@ module.exports = {
     secret: 'DybDHQKul3VdvEwr;-P+@bC^Ib(P=ShY2n;kW!)dLk#1ezYDWCl$]m|k4MAuVX.k'
   },
   database: {
-    local: 'mongodb://localhost/rezkyaimd',
+    local: 'mongodb://mongo:27017/imdrezkya',
     mLab: ''
   }
 };
