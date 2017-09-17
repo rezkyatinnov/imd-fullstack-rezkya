@@ -4,6 +4,7 @@ let passport = require('passport');
 let jwt = require('jsonwebtoken');
 var User = require('../models/user');
 var Follow = require('../models/follow');
+var FollowHelper = require('../helpers/follow-helper');
 let config = require('../config/config');
 let resBuilder = require('../builders/response');
 let _ = require('underscore');
@@ -91,6 +92,28 @@ router.post('/add', function (req, res) {
         resBuilder.buildBasic(res, false, 'can\'t following yourself')
     } else {
         resBuilder.buildBasic(res, false, 'unknown error')
+    }
+});
+
+// retrieve follower list
+router.post('/list', function (req, res) {
+    if (req.body.email) {
+        let userQuery = User.findOne({email: req.body.email}).exec();
+        userQuery.then(function (user) {
+            if(user){
+                FollowHelper.followerList(user._id,function(results){
+                    if(results.length>0){
+                        resBuilder.followList(res,true,"retrieving user's follower success",results);
+                    }else{
+                        resBuilder.buildBasic(res, false, 'user has no follower');
+                    }
+                });
+            }else{
+                resBuilder.buildBasic(res, false, 'no user with email: '.concat(req.body.email));
+            }
+        });
+    } else {
+        resBuilder.buildBasic(res, false, 'missing "email" field');
     }
 });
 

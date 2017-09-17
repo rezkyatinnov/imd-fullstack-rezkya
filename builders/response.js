@@ -12,5 +12,13 @@ module.exports = {
             friends:friends,
             count:friends.length
         });
+    },
+    followList : function (res, success, message,follower) {
+        return res.json({
+            success: success,
+            message: message,
+            follower:follower,
+            count:follower.length
+        });
     }
 }
