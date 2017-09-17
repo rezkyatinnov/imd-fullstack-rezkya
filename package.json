@@ -1,18 +1,31 @@
 {
   "name": "imd-fullstack-rezkya",
-  "version": "0.0.0",
+  "version": "1.0.0",
   "private": true,
   "scripts": {
     "start": "node ./bin/www"
   },
+  "engines": {
+    "node": "8.5.0",
+    "npm": "5.4.2"
+  },
   "dependencies": {
+    "async": "^2.5.0",
+    "bcrypt": "^1.0.3",
+    "bluebird": "^3.5.0",
     "body-parser": "~1.17.1",
     "cookie-parser": "~1.4.3",
     "debug": "~2.6.3",
     "express": "~4.15.2",
+    "jsonwebtoken": "^7.4.3",
+    "mongoose": "^4.11.11",
     "morgan": "~1.8.1",
+    "passport": "^0.4.0",
+    "passport-jwt": "^3.0.0",
     "pug": "~2.0.0-beta11",
-    "serve-favicon": "~2.4.2"
+    "serve-favicon": "~2.4.2",
+    "swagger-ui-express": "^2.0.7",
+    "underscore": "^1.8.3"
   },
   "description": "imd test for fullstack developer",
   "devDependencies": {},
