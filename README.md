@@ -15,10 +15,21 @@ all features are based on User Stories written on Test Doc
 ## Run 
 
 make sure your machine is docker ready. \
-go to project root dir and type
+for docker instalation you can check it [here]()
+
+* for macOS user, check [here](https://docs.docker.com/docker-for-mac/install/)
+* for Windows 10 user, check [here](https://docs.docker.com/docker-for-windows/install/)
+* for Ubuntu, check [here](https://docs.docker.com/engine/installation/linux/docker-ce/ubuntu/)
+
+
+After you installed the docker on your machine, you can go to project root dir and type
 
 ```
-sudo docker-compose up --buld
+docker-compose up --build
+```
+or if it needs admin access, add ``sudo`` to the command
+```
+sudo docker-compose up --build
 ```
 
 ## Usage
